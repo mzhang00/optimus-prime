@@ -23,6 +23,8 @@ def make_translate( x, y, z ):
     m[1][3] = y
     m[2][3] = z
 
+#Note: The trig functions in python and c take radians as parameters, but you should assume degree input, make sure to convert or things won’t look right.
+
 def make_rotX( theta ):
     pass
 
