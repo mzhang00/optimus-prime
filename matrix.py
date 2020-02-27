@@ -9,11 +9,19 @@ z0  z1  ... zn
 """
 import math
 
-def make_translate( x, y, z ):
-    pass
-
 def make_scale( x, y, z ):
-    pass
+    m = new_matrix()
+    m[0][0] = x
+    m[1][1] = y
+    m[2][2] = z
+    m[3][3] = 1
+
+def make_translate( x, y, z ):
+    m = new_matrix()
+    ident(m)
+    m[0][3] = x
+    m[1][3] = y
+    m[2][3] = z
 
 def make_rotX( theta ):
     pass
