@@ -37,37 +37,51 @@ def parse_file( fname, points, transform, screen, color ):
     f = open(fname, "r")
     f1 = f.read()
     commands = f1.split("\n")[:-1]
-    add = 0
+    add = 1
+    i = 0
     #print(commands)
-    for i in range(len(commands)):
-        print(commands[i])
+    while i < len(commands):
+        # print(commands[i], i)
+        # print(' ')
+        # print(points)
+        # print('----------------------------------------------------')
         if commands[i] == 'ident':
             ident(transform)
         if commands[i] == 'apply':
             matrix_mult(transform, points)
         if commands[i] == 'display':
+            # print('a')
             clear_screen(screen)
+            # print('a')
             draw_lines(points, screen, color)
+            # print('a')
             display(screen)
-        if commands[i] == 'display':
+            # print('a')
+        if commands[i] == 'save':
             clear_screen(screen)
             draw_lines(points, screen, color)
             save_ppm(screen, commands[i+1])
-            add = 1
+            add = 2
         if commands[i] == 'line':
             pts = commands[i+1].split()
+            # print(pts)
+            # print(' ')
+            # print(points)
             add_edge(points, pts[0], pts[1], pts[2], pts[3], pts[4], pts[5])
-            add = 1
+            # print(' ')
+            # print(points)
+            # print('---------------------------')
+            add = 2
         if commands[i] == 'scale':
             pts = commands[i+1].split()
             temp = make_scale(pts[0], pts[1], pts[2])
             matrix_mult(temp, transform)
-            add = 1
-        if commands[i] == 'translate':
+            add = 2
+        if commands[i] == 'move':
             pts = commands[i+1].split()
             temp = make_translate(pts[0], pts[1], pts[2])
             matrix_mult(temp, transform)
-            add = 1
+            add = 2
         if commands[i] == 'rotate':
             pts = commands[i+1].split()
             temp = new_matrix()
@@ -78,8 +92,8 @@ def parse_file( fname, points, transform, screen, color ):
             if pts[0] == 'z':
                 temp = make_rotZ(pts[1])
             matrix_mult(temp, transform)
-            add = 1
+            add = 2
         if commands[i] == 'quit':
             break
         i += add
-        add = 0
+        add = 1

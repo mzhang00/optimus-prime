@@ -15,6 +15,7 @@ def make_scale( x, y, z ):
     m[1][1] = y
     m[2][2] = z
     m[3][3] = 1
+    return m
 
 def make_translate( x, y, z ):
     m = new_matrix()
@@ -22,17 +23,37 @@ def make_translate( x, y, z ):
     m[0][3] = x
     m[1][3] = y
     m[2][3] = z
-
-#Note: The trig functions in python and c take radians as parameters, but you should assume degree input, make sure to convert or things won’t look right.
+    return m
 
 def make_rotX( theta ):
-    pass
+    theta = theta * math.pi / 180
+    m = new_matrix()
+    ident(m)
+    m[2][2] = math.cos(theta)
+    m[1][2] = math.sin(theta) * -1
+    m[2][1] = math.sin(theta)
+    m[1][1] = math.cos(theta)
+    return m
 
 def make_rotY( theta ):
-    pass
+    theta = theta * math.pi / 180
+    m = new_matrix()
+    ident(m)
+    m[2][2] = math.cos(theta)
+    m[1][2] = math.sin(theta) * -1
+    m[2][1] = math.sin(theta)
+    m[1][1] = math.cos(theta)
+    return m
 
 def make_rotZ( theta ):
-    pass
+    theta = theta * math.pi / 180
+    m = new_matrix()
+    ident(m)
+    m[0][0] = math.cos(theta)
+    m[2][0] = math.sin(theta) * -1
+    m[0][2] = math.sin(theta)
+    m[2][2] = math.cos(theta)
+    return m
 
 #print the matrix such that it looks like
 #the template in the top comment
