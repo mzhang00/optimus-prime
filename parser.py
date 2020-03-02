@@ -29,71 +29,57 @@ The file follows the following format:
                save the screen to a file -
                takes 1 argument (file name)
          quit: end parsing
-
 See the file script for an example of the file format
 """
 def parse_file( fname, points, transform, screen, color ):
-    #print('test')
-    f = open(fname, "r")
-    f1 = f.read()
-    commands = f1.split("\n")[:-1]
-    add = 1
-    i = 0
-    #print(commands)
-    while i < len(commands):
-        # print(commands[i], i)
-        # print(' ')
-        # print(points)
-        # print('----------------------------------------------------')
-        if commands[i] == 'ident':
+    f=open(fname,"r")
+    count=0
+    ident(transform)
+    for instruct in f:
+        count+=1
+        if instruct == "line\n":
+            instruct=f.readline().strip("\n").split(" ")
+            edge=[int(instruct[0]),int(instruct[1]),int(instruct[2]),1]
+            points.append(edge)
+            edge=[int(instruct[3]), int(instruct[4]),int(instruct[5]),1]
+            points.append(edge)
+        elif instruct == "ident\n":
             ident(transform)
-        if commands[i] == 'apply':
-            matrix_mult(transform, points)
-        if commands[i] == 'display':
-            # print('a')
+        elif instruct == "scale\n":
+            instruct=f.readline().strip("\n").split(" ")
+            scale=make_scale(int(instruct[0]),int(instruct[1]),int(instruct[2]))
+            matrix_mult(scale,transform)
+        elif instruct == "move\n":
+            instruct=f.readline().strip("\n").split(" ")
+            translate=make_translate(int(instruct[0]),int(instruct[1]),int(instruct[2]))
+            matrix_mult(translate,transform)
+        elif instruct == "rotate\n":
+            instruct=f.readline().strip("\n").split(" ")
+            if(instruct[0]=="x"):
+                rotate=make_rotX(int(instruct[1]))
+                matrix_mult(rotate,transform)
+            elif(instruct[0]=="y"):
+                rotate=make_rotY(int(instruct[1]))
+                matrix_mult(rotate,transform)
+            elif(instruct[0]=="z"):
+                rotate=make_rotZ(int(instruct[1]))
+                matrix_mult(rotate,transform)
+            else:
+                print("Invalid Argument at line "+str(count))
+        elif instruct == "apply\n":
+            matrix_mult(transform,points)
+        elif instruct == "display\n":
             clear_screen(screen)
-            # print('a')
-            draw_lines(points, screen, color)
-            # print('a')
+            draw_lines(points,screen,color)
             display(screen)
-            # print('a')
-        if commands[i] == 'save':
+        elif instruct == "save\n":
+            instruct=f.readline().strip("\n")
             clear_screen(screen)
-            draw_lines(points, screen, color)
-            save_ppm(screen, commands[i+1])
-            add = 2
-        if commands[i] == 'line':
-            pts = commands[i+1].split()
-            # print(pts)
-            # print(' ')
-            # print(points)
-            add_edge(points, pts[0], pts[1], pts[2], pts[3], pts[4], pts[5])
-            # print(' ')
-            # print(points)
-            # print('---------------------------')
-            add = 2
-        if commands[i] == 'scale':
-            pts = commands[i+1].split()
-            temp = make_scale(pts[0], pts[1], pts[2])
-            matrix_mult(temp, transform)
-            add = 2
-        if commands[i] == 'move':
-            pts = commands[i+1].split()
-            temp = make_translate(pts[0], pts[1], pts[2])
-            matrix_mult(temp, transform)
-            add = 2
-        if commands[i] == 'rotate':
-            pts = commands[i+1].split()
-            temp = new_matrix()
-            if pts[0] == 'x':
-                temp = make_rotX(pts[1])
-            if pts[0] == 'y':
-                temp = make_rotY(pts[1])
-            if pts[0] == 'z':
-                temp = make_rotZ(pts[1])
-            matrix_mult(temp, transform)
-            add = 2
-        if commands[i] == 'quit':
+            draw_lines(points,screen,color)
+            save_extension(screen,instruct)
+        elif instruct == "quit\n":
             break
-        i += add
-        add = 1
+        else:
+            print(instruct)
+            print("Invalid Command at line "+str(count))
+    f.close()
