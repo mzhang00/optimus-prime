@@ -49,6 +49,9 @@ def parse_file( fname, points, transform, screen, color ):
             ident(transform)
         if commands[i] == 'apply':
             matrix_mult(transform, points)
+            for col in points:
+                for x in range(len(col)):
+                    col[x] = int(col[x])            
         if commands[i] == 'display':
             # print('a')
             clear_screen(screen)
