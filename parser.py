@@ -67,30 +67,30 @@ def parse_file( fname, points, transform, screen, color ):
             # print(pts)
             # print(' ')
             # print(points)
-            add_edge(points, pts[0], pts[1], pts[2], pts[3], pts[4], pts[5])
+            add_edge(points, int(pts[0]), int(pts[1]), int(pts[2]), int(pts[3]), int(pts[4]), int(pts[5]))
             # print(' ')
             # print(points)
             # print('---------------------------')
             add = 2
         if commands[i] == 'scale':
             pts = commands[i+1].split()
-            temp = make_scale(pts[0], pts[1], pts[2])
+            temp = make_scale(int(pts[0]), int(pts[1]), int(pts[2]))
             matrix_mult(temp, transform)
             add = 2
         if commands[i] == 'move':
             pts = commands[i+1].split()
-            temp = make_translate(pts[0], pts[1], pts[2])
+            temp = make_translate(int(pts[0]), int(pts[1]), int(pts[2]))
             matrix_mult(temp, transform)
             add = 2
         if commands[i] == 'rotate':
             pts = commands[i+1].split()
             temp = new_matrix()
             if pts[0] == 'x':
-                temp = make_rotX(pts[1])
+                temp = make_rotX(int(pts[1]))
             if pts[0] == 'y':
-                temp = make_rotY(pts[1])
+                temp = make_rotY(int(pts[1]))
             if pts[0] == 'z':
-                temp = make_rotZ(pts[1])
+                temp = make_rotZ(int(pts[1]))
             matrix_mult(temp, transform)
             add = 2
         if commands[i] == 'quit':
