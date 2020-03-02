@@ -41,10 +41,10 @@ def parse_file( fname, points, transform, screen, color ):
     i = 0
     #print(commands)
     while i < len(commands):
-        # print(commands[i], i)
-        # print(' ')
-        # print(points)
-        # print('----------------------------------------------------')
+        print(commands[i], i)
+        print(' ')
+        print(points)
+        print('----------------------------------------------------')
         if commands[i] == 'ident':
             ident(transform)
         if commands[i] == 'apply':
