@@ -61,7 +61,7 @@ def parse_file( fname, points, transform, screen, color ):
             clear_screen(screen)
             draw_lines(points, screen, color)
             print(len(commands))
-            print(commands[i + 1])
+            print(commands[i])
             save_ppm(screen, commands[i+1])
             add = 2
         if commands[i] == 'line':
