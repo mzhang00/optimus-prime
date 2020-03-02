@@ -26,33 +26,33 @@ def make_translate( x, y, z ):
     return m
 
 def make_rotX( theta ):
-    theta = theta * math.pi / 180
+    theta = math.radians(theta)
     m = new_matrix()
     ident(m)
-    m[2][2] = math.cos(theta)
+    m[1][1] = math.cos(theta)
     m[2][1] = math.sin(theta) * -1
     m[1][2] = math.sin(theta)
-    m[1][1] = math.cos(theta)
+    m[2][2] = math.cos(theta)
     return m
 
 def make_rotY( theta ):
-    theta = theta * math.pi / 180
-    m = new_matrix()
-    ident(m)
-    m[2][2] = math.cos(theta)
-    m[2][1] = math.sin(theta) * -1
-    m[1][2] = math.sin(theta)
-    m[1][1] = math.cos(theta)
-    return m
-
-def make_rotZ( theta ):
-    theta = theta * math.pi / 180
+    theta = math.radians(theta)
     m = new_matrix()
     ident(m)
     m[0][0] = math.cos(theta)
     m[0][2] = math.sin(theta) * -1
     m[2][0] = math.sin(theta)
     m[2][2] = math.cos(theta)
+    return m
+
+def make_rotZ( theta ):
+    theta = math.radians(theta)
+    m = new_matrix()
+    ident(m)
+    m[0][0] = math.cos(theta)
+    m[1][0] = math.sin(theta) * -1
+    m[1][1] = math.sin(theta)
+    m[0][1] = math.cos(theta)
     return m
 
 #print the matrix such that it looks like
