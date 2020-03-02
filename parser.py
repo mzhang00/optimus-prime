@@ -74,7 +74,7 @@ def parse_file( fname, points, transform, screen, color ):
             add = 2
         if commands[i] == 'scale':
             pts = commands[i+1].split()
-            temp = make_scale(float(pts[0]), float(pts[1]), float(pts[2]))
+            temp = make_scale(int(pts[0]), int(pts[1]), int(pts[2]))
             matrix_mult(temp, transform)
             add = 2
         if commands[i] == 'move':
@@ -86,11 +86,11 @@ def parse_file( fname, points, transform, screen, color ):
             pts = commands[i+1].split()
             temp = new_matrix()
             if pts[0] == 'x':
-                temp = make_rotX(float(pts[1]))
+                temp = make_rotX(int(pts[1]))
             if pts[0] == 'y':
-                temp = make_rotY(float(pts[1]))
+                temp = make_rotY(int(pts[1]))
             if pts[0] == 'z':
-                temp = make_rotZ(float(pts[1]))
+                temp = make_rotZ(int(pts[1]))
             matrix_mult(temp, transform)
             add = 2
         if commands[i] == 'quit':
