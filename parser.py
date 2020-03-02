@@ -33,49 +33,67 @@ The file follows the following format:
 See the file script for an example of the file format
 """
 def parse_file( fname, points, transform, screen, color ):
-    with open(fname,'r') as fileReader:
-        file_line = fileReader.readline().strip()
-        while file_line != "":
-            if file_line == "line":
-                file_line = fileReader.readline().strip()
-                ints = [int(x) for x in file_line.split(" ")]
-                add_edge(points, ints[0], ints[1], ints[2], ints[3], ints[4], ints[5])
-            elif file_line == "ident":
-                ident(transform)
-            elif file_line == "scale":
-                file_line = fileReader.readline().strip()
-                nums = [float(x) for x in file_line.split(" ")]
-                scale = make_scale(nums[0], nums[1], nums[2])
-                matrix_mult(scale, transform)
-            elif file_line == "move":
-                file_line = fileReader.readline().strip()
-                ints = [int(x) for x in file_line.split(" ")]
-                move = make_translate(ints[0], ints[1], ints[2])
-                matrix_mult(move, transform)
-            elif file_line == "rotate":
-                file_line = fileReader.readline().strip()
-                args = file_line.split(" ")
-                if args[0] == "x":
-                    rotate = make_rotX(float(args[1]))
-                elif args[0] == "y":
-                    rotate = make_rotY(float(args[1]))
-                else:
-                    rotate = make_rotZ(float(args[1]))
-                matrix_mult(rotate, transform)
-            elif file_line == "apply":
-                matrix_mult(transform, points)
-                for col in points:
-                    for x in range(len(col)):
-                        col[x] = int(col[x])
-            elif file_line == "display":
-                clear_screen(screen)
-                draw_lines(points, screen, color)
-                display(screen)
-            elif file_line == "save":
-                file_line = fileReader.readline().strip()
-                clear_screen(screen)
-                draw_lines(points, screen, color)
-                save_extension(screen, file_line)
-            else:
-                break
-            file_line = fileReader.readline().strip()
+    #print('test')
+    f = open(fname, "r")
+    f1 = f.read()
+    commands = f1.split("\n")[:-1]
+    add = 1
+    i = 0
+    #print(commands)
+    while i < len(commands):
+        # print(commands[i], i)
+        # print(' ')
+        # print(points)
+        # print('----------------------------------------------------')
+        if commands[i] == 'ident':
+            ident(transform)
+        if commands[i] == 'apply':
+            matrix_mult(transform, points)
+        if commands[i] == 'display':
+            # print('a')
+            clear_screen(screen)
+            # print('a')
+            draw_lines(points, screen, color)
+            # print('a')
+            display(screen)
+            # print('a')
+        if commands[i] == 'save':
+            clear_screen(screen)
+            draw_lines(points, screen, color)
+            save_ppm(screen, commands[i+1])
+            add = 2
+        if commands[i] == 'line':
+            pts = commands[i+1].split()
+            # print(pts)
+            # print(' ')
+            # print(points)
+            add_edge(points, pts[0], pts[1], pts[2], pts[3], pts[4], pts[5])
+            # print(' ')
+            # print(points)
+            # print('---------------------------')
+            add = 2
+        if commands[i] == 'scale':
+            pts = commands[i+1].split()
+            temp = make_scale(pts[0], pts[1], pts[2])
+            matrix_mult(temp, transform)
+            add = 2
+        if commands[i] == 'move':
+            pts = commands[i+1].split()
+            temp = make_translate(pts[0], pts[1], pts[2])
+            matrix_mult(temp, transform)
+            add = 2
+        if commands[i] == 'rotate':
+            pts = commands[i+1].split()
+            temp = new_matrix()
+            if pts[0] == 'x':
+                temp = make_rotX(pts[1])
+            if pts[0] == 'y':
+                temp = make_rotY(pts[1])
+            if pts[0] == 'z':
+                temp = make_rotZ(pts[1])
+            matrix_mult(temp, transform)
+            add = 2
+        if commands[i] == 'quit':
+            break
+        i += add
+        add = 1
