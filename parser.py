@@ -36,7 +36,7 @@ def parse_file( fname, points, transform, screen, color ):
     #print('test')
     f = open(fname, "r")
     f1 = f.read()
-    commands = f1.split("\n")[:-1]
+    commands = f1.split("\n")
     add = 1
     i = 0
     #print(commands)
@@ -60,8 +60,9 @@ def parse_file( fname, points, transform, screen, color ):
         if commands[i] == 'save':
             clear_screen(screen)
             draw_lines(points, screen, color)
-            print(len(commands))
-            print(commands[i])
+            # print(len(commands))
+            # print(i)
+            # print(commands[i])
             save_ppm(screen, commands[i+1])
             add = 2
         if commands[i] == 'line':
